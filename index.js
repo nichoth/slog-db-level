@@ -4,9 +4,8 @@ var liveStream = require('level-live-stream');
 
 module.exports = adapter;
 
-function adapter(level) {
+function adapter(db) {
 
-  var db = require('level-sublevel')(level);
   db.sublevel('graph', { valueEncoding: 'utf8' });
   liveStream.install(db);
   var graph = levelgraph(db.sublevels.graph);
@@ -139,7 +138,5 @@ function adapter(level) {
 
     db.batch(ops, cb);
   }
-
-  return a;
 }
 
