@@ -28,7 +28,6 @@
   },
   "dependencies": {
     "after": "^0.8.1",
-    "level-live-stream": "^1.4.11",
     "levelgraph": "^1.1.0"
   }
 }

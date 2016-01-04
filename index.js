@@ -1,13 +1,11 @@
 var after = require('after');
 var levelgraph = require('levelgraph');
-var liveStream = require('level-live-stream');
 
 module.exports = adapter;
 
 function adapter(db) {
 
   db.sublevel('graph', { valueEncoding: 'utf8' });
-  liveStream.install(db);
   var graph = levelgraph(db.sublevels.graph);
 
   var slogDb = {
