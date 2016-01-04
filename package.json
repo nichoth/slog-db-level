@@ -1,0 +1,35 @@
+{
+  "name": "slog-db-level",
+  "version": "0.0.0",
+  "description": "Slog db built on top of levelup and levelgraph",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test/index.js",
+    "postversion": "git push && git push --tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nichoth/slog-db-level.git"
+  },
+  "keywords": [
+    "database",
+    "levelup",
+    "graph"
+  ],
+  "author": "Nick Thomas <nichoth@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nichoth/slog-db-level/issues"
+  },
+  "homepage": "https://github.com/nichoth/slog-db-level#readme",
+  "devDependencies": {
+    "level-test": "^2.0.1",
+    "tape": "^4.4.0"
+  },
+  "dependencies": {
+    "after": "^0.8.1",
+    "level-live-stream": "^1.4.11",
+    "level-sublevel": "^6.5.2",
+    "levelgraph": "^1.1.0"
+  }
+}
