@@ -25,7 +25,7 @@ function slogDb(db) {
 
   return db;
 
-  function fetchNodes(graph, query, cb) {
+  function fetchNodes(query, cb) {
     var db = this;
     graph.get(query, function(err, res) {
       var nodes = [];
@@ -39,7 +39,7 @@ function slogDb(db) {
     });
   }
 
-  function getValues(graph, index, cb) {
+  function getValues(index, cb) {
     var db = this;
 
     graph.get({ predicate: index }, function(err, res) {
@@ -63,7 +63,7 @@ function slogDb(db) {
     });
   }
 
-  function fetchNode(graph, id, cb) {
+  function fetchNode(id, cb) {
     var db = this;
 
     var node = { index: id };
@@ -97,7 +97,7 @@ function slogDb(db) {
     });
   }
 
-  function putNode(graph, fields, cb) {
+  function putNode(fields, cb) {
     var db = this;
 
     var node = fields.reduce(function(acc, f) {
