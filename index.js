@@ -1,21 +1,28 @@
 var after = require('after');
 var levelgraph = require('levelgraph');
+var sublevel = require('level-sublevel');
 
-module.exports = adapter;
+module.exports = slogDb;
 
-function adapter(db) {
+function slogDb(db) {
 
-  db.sublevel('graph', { valueEncoding: 'utf8' });
-  var graph = levelgraph(db.sublevels.graph);
+  sublevel(db);
+  var graph = db.sublevel('graph');
+  db.methods = db.methods || {};
 
-  var slogDb = {
-    getValues: getValues,
-    fetchNode: fetchNode,
-    putNode: putNode,
-    fetchNodes: fetchNodes
-  };
+  db.methods.slogGetValues = { type: 'async' };
+  db.slogGetValues = getValues;
 
-  return slogDb;
+  db.methods.slogFetchNode = { type: 'async' };
+  db.slogFetchNode = fetchNode;
+
+  db.methods.slogPutNode = { type: 'async' };
+  db.slogPutNode = putNode;
+
+  db.methods.slogFetchNodes = { type: 'async' };
+  db.slogFetchNodes = fetchNodes;
+
+  return db;
 
   function fetchNodes(query, cb) {
     graph.get(query, function(err, res) {
@@ -31,6 +38,9 @@ function adapter(db) {
   }
 
   function getValues(index, cb) {
+    var db = this;
+    var graph = db.sublevels.graph;
+
     graph.get({ predicate: index }, function(err, res) {
       var valIndexes = res.reduce(function(acc, t) {
         acc[t.object] = true;
