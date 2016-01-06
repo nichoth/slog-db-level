@@ -6,7 +6,9 @@ module.exports = slogDb;
 
 function slogDb(db) {
 
-  sublevel(db);
+  db = sublevel(db);
+  console.log(db);
+  console.log(db.sublevels);
   var graph = db.sublevel('graph', { valueEncoding: 'utf8' });
   db.methods = db.methods || {};
 
