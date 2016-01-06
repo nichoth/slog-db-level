@@ -7,7 +7,8 @@ module.exports = slogDb;
 function slogDb(db) {
 
   db = sublevel(db);
-  var graph = db.sublevel('graph', { valueEncoding: 'utf8' });
+  var graphSub = db.sublevel('graph', { valueEncoding: 'utf8' });
+  var graph = levelgraph(graphSub);
   db.methods = db.methods || {};
 
   db.methods.slogGetValues = { type: 'async' };
@@ -24,9 +25,8 @@ function slogDb(db) {
 
   return db;
 
-  function fetchNodes(query, cb) {
+  function fetchNodes(graph, query, cb) {
     var db = this;
-    var graph = db.sublevels.graph;
     graph.get(query, function(err, res) {
       var nodes = [];
       var next = after(res.length, cb);
@@ -39,9 +39,8 @@ function slogDb(db) {
     });
   }
 
-  function getValues(index, cb) {
+  function getValues(graph, index, cb) {
     var db = this;
-    var graph = db.sublevels.graph;
 
     graph.get({ predicate: index }, function(err, res) {
       var valIndexes = res.reduce(function(acc, t) {
@@ -64,9 +63,9 @@ function slogDb(db) {
     });
   }
 
-  function fetchNode(id, cb) {
+  function fetchNode(graph, id, cb) {
     var db = this;
-    var graph = db.sublevels.graph;
+
     var node = { index: id };
     var next = after(2, function(err, node) {
       cb(err, node);
@@ -98,9 +97,8 @@ function slogDb(db) {
     });
   }
 
-  function putNode(fields, cb) {
+  function putNode(graph, fields, cb) {
     var db = this;
-    var graph = dblsublevels.graph;
 
     var node = fields.reduce(function(acc, f) {
       if (f.field) acc[f.field] = f.value;
