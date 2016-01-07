@@ -107,8 +107,6 @@ function slogDb(db) {
 
     var fs = fields.filter(function(f) { return f.field !== 'name'; });
 
-    console.log(node);
-
     var ops = [
       {
         type: 'put',
