@@ -23,7 +23,52 @@ function slogDb(db) {
   db.methods.slogFetchNodes = { type: 'async' };
   db.slogFetchNodes = fetchNodes;
 
+  db.methods.slogPutField = { type: 'async' };
+  db.slogPutField = slogOp.bind(null, 'put', 'field');
+
+  db.methods.slogDelField = { type: 'async' };
+  db.slogDelField = slogOp.bind(null, 'del', 'field');
+
+  db.methods.slogPutValue = { type: 'async' };
+  db.slogPutValue = slogOp.bind(null, 'put', 'value');
+
+  db.methods.slogDelValue = { type: 'async' };
+  db.slogDelValue = slogOp.bind(null, 'del', 'value');
+
+  db.slog
+
   return db;
+
+  function slogOp(opType, FVType, item, cb) {
+    var ops = [
+      { type: opType, key: item.key }
+    ];
+    var map = {
+      field: 'predicate',
+      value: 'object'
+    };
+
+    var pattern = {};
+    pattern[ map[FVType] ] = item.key;
+    graph.get(pattern, function(err, res) {
+      if (err) return cb(err);
+      res = res instanceof Array ? res : [res];
+
+      var graphBatch = res.map(function(r) {
+        return graph.generateBatch(r, opType);
+      }).reduce(function(acc, rs) {
+        return acc.concat(
+          rs.map(function(r) {
+            r.prefix = ['graph'];
+            r.valueEncoding = 'utf8';
+            return r;
+          })
+        );
+      }, []);
+
+      db.batch(ops.concat(graphBatch), cb);
+    });
+  }
 
   function fetchNodes(query, cb) {
     var db = this;
