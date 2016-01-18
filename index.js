@@ -93,6 +93,11 @@ function slogDb(db) {
     var db = this;
 
     graph.get({ predicate: index }, function(err, res) {
+      if (res.length === 0) {  // this field has no relationships
+        return db.del(index, function(err) {
+          cb(err, []);
+        });
+      }
       var valIndexes = res.reduce(function(acc, t) {
         acc[t.object] = true;
         return acc;
@@ -199,4 +204,3 @@ function slogDb(db) {
     db.batch(ops, cb);
   }
 }
-
