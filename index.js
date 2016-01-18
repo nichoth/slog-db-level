@@ -36,7 +36,7 @@ function slogDb(db) {
   db.slogDelValue = slogOp.bind(null, 'del', 'value');
 
   db.methods.slogDelNode = { type: 'async' };
-  db.slogDelNode = slogOp.bind(null, 'del', 'value');
+  db.slogDelNode = slogOp.bind(null, 'del', 'node');
 
   db.slog
 
@@ -47,6 +47,7 @@ function slogDb(db) {
       { type: opType, key: item.key }
     ];
     var map = {
+      subject: 'node',
       field: 'predicate',
       value: 'object'
     };
@@ -80,6 +81,7 @@ function slogDb(db) {
       var next = after(res.length, cb);
       res.forEach(function(r) {
         db.get(r.subject, function(err, node) {
+          if (err) return next(err);
           nodes.push({ index: r.subject, name: node.name });
           next(null, nodes);
         });
