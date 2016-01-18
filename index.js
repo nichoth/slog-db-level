@@ -47,7 +47,7 @@ function slogDb(db) {
       { type: opType, key: item.key }
     ];
     var map = {
-      subject: 'node',
+      node: 'subject',
       field: 'predicate',
       value: 'object'
     };
