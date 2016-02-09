@@ -24,7 +24,8 @@
   "homepage": "https://github.com/nichoth/slog-db-level#readme",
   "devDependencies": {
     "level-test": "^2.0.1",
-    "tape": "^4.4.0"
+    "tape": "^4.4.0",
+    "slog-db-spec": "file:../slog-db-spec"
   },
   "dependencies": {
     "after": "^0.8.1",

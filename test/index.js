@@ -2,11 +2,21 @@ var test = require('tape');
 var slogdb = require('../');
 var level = require('level-test')({ mem: true });
 var levelgraph = require('levelgraph');
+var slogTests = require('slog-db-spec');
 
-function createDb(name) {
-  return slogdb( level(name, { valueEncoding: 'json' }) );
+function createDb(done) {
+  var db = slogdb( level('testdb', { valueEncoding: 'json' }) );
+  done(null, db);
 }
 
+function teardown(db, done) {
+  db.db.close(done);
+}
+
+slogTests(createDb, teardown);
+
+
+/*
 // Get all values that are related to the given field. Return an array of
 // objects.
 test('Get values for a field', function (t) {
@@ -48,3 +58,4 @@ test('Del a field', function(t) {
 // fetchNodes
 // Get array of nodes from levelgraph query. Like
 // [{ index: '', name: '' }]
+*/

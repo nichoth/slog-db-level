@@ -38,9 +38,18 @@ function slogDb(db) {
   db.methods.slogDelNode = { type: 'async' };
   db.slogDelNode = slogOp.bind(null, 'del', 'node');
 
-  db.slog
-
-  return db;
+  return {
+    getValues: db.slogGetValues,
+    fetchNode: db.slogFetchNode,
+    putNode: db.slogPutNode,
+    fetchNodes: db.slogFetchNodes,
+    putField: db.slogPutField,
+    delField: db.slogDelField,
+    putValue: db.slogPutValue,
+    delValue: db.slogDelValue,
+    delNode: db.slogDelNode,
+    db: db
+  };
 
   function slogOp(opType, FVType, item, cb) {
     var ops = [
