@@ -1,6 +1,6 @@
 {
   "name": "slog-db-level",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Slog db built on top of levelup and levelgraph",
   "main": "index.js",
   "scripts": {
