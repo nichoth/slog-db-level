@@ -84,7 +84,7 @@ function slogDb(db) {
   }
 
   function fetchNodes(query, cb) {
-    var db = this;
+
     graph.get(query, function(err, res) {
       var nodes = [];
       var next = after(res.length, cb);
@@ -99,7 +99,6 @@ function slogDb(db) {
   }
 
   function getValues(index, cb) {
-    var db = this;
 
     graph.get({ predicate: index }, function(err, res) {
       if (res.length === 0) {  // this field has no relationships
@@ -128,7 +127,6 @@ function slogDb(db) {
   }
 
   function fetchNode(id, cb) {
-    var db = this;
 
     var node = { index: id };
     var next = after(2, function(err, node) {
@@ -161,14 +159,11 @@ function slogDb(db) {
     });
   }
 
-  function putNode(fields, cb) {
-    var db = this;
+  function putNode(node, cb) {
 
-    var node = fields.reduce(function(acc, f) {
-      if (f.field) acc[f.field] = f.value;
-      return acc;
-    }, {});
-
+    var fields = Object.keys(node).map(function(k) {
+      return { field: k, value: node[k] };
+    });
     var fs = fields.filter(function(f) { return f.field !== 'name'; });
 
     var ops = [
@@ -210,6 +205,8 @@ function slogDb(db) {
       return op;
     }));
 
-    db.batch(ops, cb);
+    db.batch(ops, function(err) {
+      cb(err, { index: 'node'+node.name, name: node.name });
+    });
   }
 }
